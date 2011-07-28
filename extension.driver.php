@@ -204,7 +204,12 @@
 		/** Utilities **/
 		
 		public function resolveType($type){
-			return $this->_Parent->Configuration->get(strtolower($type), self::SETTINGS_GROUP);
+			// fix issue #2, for downloadables files
+		    if($type{0} == '.'){  
+		        return Symphony::Configuration()->get(strtolower(substr($type, 1)), 'content-type-mappings');                               
+		    } else {
+		        return Symphony::Configuration()->get(strtolower($type), 'content-type-mappings');              
+		    }
 		}
 		
 		public function setContentType(array $context=NULL){
