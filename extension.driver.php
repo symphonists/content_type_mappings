@@ -21,7 +21,7 @@
 								'website'		=> 'http://www.nitriques.com/open-source/',
 								'email'			=> 'open-source (at) nitriques.com'
 							)),
-						'description'	=> __('Allows more control over the Symphony frontend page content type mappings'),
+						'description'	=> __('Allows more control over the Symphony Frontend page content type mappings'),
 						'compatibility' => array(
 							'2.2.5' => true,
 							'2.2.4' => true,
@@ -33,7 +33,7 @@
 							'2.1.1' => true,
 							'2.1.0' => true,
 						)
-				 	);
+					);
 		}
 
 		public function getSubscribedDelegates(){
@@ -49,9 +49,9 @@
 						'callback'	=> 'addCustomPreferenceFieldsets'
 					),
 					array(
-						'page'      => '/system/preferences/',
-						'delegate'  => 'Save',
-						'callback'  => 'save'
+						'page'		=> '/system/preferences/',
+						'delegate'	=> 'Save',
+						'callback'	=> 'save'
 					),
 					array(
 						'page' => '/backend/',
@@ -88,7 +88,7 @@
 			$fieldset->appendChild(new XMLElement('legend', self::EXT_NAME));
 
 			// create a paragraph for short intructions
-			$p = new XMLElement('p', __('Define here content type you wanna use: You can delete them by setting no value in the input'), array('class' => 'help'));
+			$p = new XMLElement('p', __('Content Types defined here are usable in the Pages Editor.'), array('class' => 'help'));
 
 			// append intro paragraph
 			$fieldset->appendChild($p);
@@ -232,11 +232,11 @@
 
 		public function resolveType($type){
 			// fix issue #2, for downloadables files
-		    if($type{0} == '.'){
-		        return Symphony::Configuration()->get(strtolower(substr($type, 1)), 'content-type-mappings');
-		    } else {
-		        return Symphony::Configuration()->get(strtolower($type), 'content-type-mappings');
-		    }
+			if($type{0} == '.'){
+				return Symphony::Configuration()->get(strtolower(substr($type, 1)), 'content-type-mappings');
+			} else {
+				return Symphony::Configuration()->get(strtolower($type), 'content-type-mappings');
+			}
 		}
 
 		public function setContentType(array $context=NULL){
