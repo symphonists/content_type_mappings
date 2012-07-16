@@ -1,42 +1,10 @@
 <?php
 
-	Final Class extension_Content_Type_Mappings extends Extension{
-
+	Final Class extension_Content_Type_Mappings extends Extension {
+	
 		const SETTINGS_GROUP = 'content-type-mappings';
 
-		const EXT_NAME = 'Content Type Mappings';
-
-		/** Extension **/
-
-		public function about(){
-			return array('name' => self::EXT_NAME,
-						 'version' => '1.4',
-						 'release-date' => '2011-11-17',
-						 'author' => array (
-							array( 'name' => 'Symphony Team',
-								   'website' => 'http://www.symphony21.com',
-								   'email' => 'team@symphony21.com'
-							),array(
-								'name'			=> 'Solutions Nitriques',
-								'website'		=> 'http://www.nitriques.com/open-source/',
-								'email'			=> 'open-source (at) nitriques.com'
-							)),
-						'description'	=> __('Allows more control over the Symphony Frontend page content type mappings'),
-						'compatibility' => array(
-							'2.2.5' => true,
-							'2.2.4' => true,
-							'2.2.3' => true,
-							'2.2.2' => true,
-							'2.2.1' => true,
-							'2.2' => true,
-							'2.1.2' => true,
-							'2.1.1' => true,
-							'2.1.0' => true,
-						)
-					);
-		}
-
-		public function getSubscribedDelegates(){
+		public function getSubscribedDelegates() {
 			return array(
 					array(
 						'page' => '/frontend/',
@@ -44,34 +12,29 @@
 						'callback' => 'setContentType'
 					),
 					array(
-						'page'		=> '/system/preferences/',
-						'delegate'	=> 'AddCustomPreferenceFieldsets',
-						'callback'	=> 'addCustomPreferenceFieldsets'
+						'page' => '/system/preferences/',
+						'delegate' => 'AddCustomPreferenceFieldsets',
+						'callback' => 'addCustomPreferenceFieldsets'
 					),
 					array(
-						'page'		=> '/system/preferences/',
-						'delegate'	=> 'Save',
-						'callback'	=> 'save'
+						'page' => '/system/preferences/',
+						'delegate' => 'Save',
+						'callback' => 'save'
 					),
 					array(
 						'page' => '/backend/',
-						'delegate' => 'InitaliseAdminPageHead',
-						'callback' => 'initaliseAdminPageHead'
+						'delegate' => 'AdminPagePreGenerate',
+						'callback' => '__appendAssets'
 					)
 				);
 		}
 
-		public function initaliseAdminPageHead($context)
-		{
-			$page = $context['parent']->Page;
-			if($page instanceof contentSystemPreferences)
-			{
-				$page->addScriptToHead(URL . '/extensions/content_type_mappings/assets/content_type_mappings.preferences.js', 401, false);
+		public function __appendAssets($context) {
+			$callback = Symphony::Engine()->getPageCallback();
+			if($callback['driver'] == 'systempreferences') {
+				Administration::instance()->Page->addScriptToHead(URL . '/extensions/content_type_mappings/assets/content_type_mappings.preferences.js', 401, false);
 			}
 		}
-
-
-		/** Preferences **/
 
 		/**
 		 * Delegate handle that adds Custom Preference Fieldsets
@@ -85,7 +48,7 @@
 			// creates the field set
 			$fieldset = new XMLElement('fieldset');
 			$fieldset->setAttribute('class', 'settings');
-			$fieldset->appendChild(new XMLElement('legend', self::EXT_NAME));
+			$fieldset->appendChild(new XMLElement('legend', __('Content Type Mappings')));
 
 			// create a paragraph for short intructions
 			$p = new XMLElement('p', __('Content Types defined here are usable in the Pages Editor.'), array('class' => 'help'));
@@ -94,13 +57,15 @@
 			$fieldset->appendChild($p);
 
 			// outter wrapper
-			$out_wrapper = new XMLElement('div');
-			$out_wrapper->setAttribute('class', 'subsection');
+			$out_wrapper = new XMLElement('div', null, array(
+				'class' => 'frame',
+				'id' => 'content-type-mappings-duplicator'
+			));
+			$out_wrapper->setAttribute('class', 'frame');
+			$out_wrapper->setAttribute('class', 'frame');
 
 			// create a wrapper
 			$wrapper = new XMLElement('ol');
-			$wrapper->setAttribute('id', 'content-type-mappings-duplicator');
-			$wrapper->setAttribute('class', 'orderable duplicator collapsible');
 
 			// template
 			$wrapper->appendChild($this->generateRow('New Content Mapping','template'));
@@ -120,50 +85,48 @@
 			$context['wrapper']->appendChild($fieldset);
 		}
 
-
 		/**
 		 * Quick utility function that creates a duplicator row
 		 *
-		 * @param string $header
+		 * @param string $title
 		 * @param string $class @optional
 		 * @param array $values @optional
 		 */
-		public function generateRow($header, $class = '', $values = array()) {
+		public function generateRow($title, $class = '', $values = array()) {
 
-			// create the label and the input field
-			$wrap = new XMLElement('li');
-			$wrap->setAttribute('class', $class);
+			// Create the label and the input field
+			$wrapper = new XMLElement('li');
+			$wrapper->setAttribute('class', $class);
 
-			$h4 = new XMLElement('h4');
-			$h4->setAttribute('class', 'header');
-			$h4->setValue(__($header));
+			// HEader
+			$header = new XMLElement('header');
+			$header->setValue(__($title));
 
-			// value group
-			$group = new XMLElement('div', null, array('class' => 'group'));
+			// Content
+			$content = new XMLElement('div', null, array('class' => 'content'));
+			$columns = new XMLElement('div', null, array('class' => 'two columns'));
+			$content->appendChild($columns);
 
-			// page type
-			$page_type = $this->generateLabelInput($group, 'Page Type', 'page-type', $values['page-type']);
-			// mime type
-			$mime_type = $this->generateLabelInput($group, 'Mime Type', 'mime-type', $values['mime-type']);
+			// Page type column 
+			$page_type = $this->generateLabelInput($columns, 'Page Type', 'page-type', $values['page-type']);
+			
+			// Mime type column
+			$mime_type = $this->generateLabelInput($columns, 'Mime Type', 'mime-type', $values['mime-type']);
 
-			// append header and content
-			$wrap->appendChild($h4);
-			$wrap->appendChild($group);
+			// Append header and content
+			$wrapper->appendChild($header);
+			$wrapper->appendChild($columns);
 
-			return $wrap;
+			return $wrapper;
 		}
 
 		private function generateLabelInput(&$wrap, $title, $name, $value=null) {
-
 			$type = Widget::Label();
-
+			$type->setAttribute('class', 'column');
 			$type->appendChild(new XMLElement('span',__($title)));
-			$type->appendChild(Widget::Input('settings[' . self::SETTINGS_GROUP . '][mappings][]['.$name.']', $value));
-
+			$type->appendChild(Widget::Input('settings[content-type-mappings][mappings][]['.$name.']', $value));
 			$wrap->appendChild($type);
-
 		}
-
 
 		/**
 		 * Delegate handle that is called prior to saving the settings
@@ -206,7 +169,6 @@
 		/** Installation **/
 
 		public function install(){
-
 			$initial_mappings = array(
 				'xml' => 'text/xml; charset=utf-8',
 				'text' => 'text/plain; charset=utf-8',
@@ -226,25 +188,27 @@
 			Administration::instance()->saveConfig();
 		}
 
-
-
 		/** Utilities **/
 
 		public function resolveType($type){
+		
 			// fix issue #2, for downloadables files
-			if($type{0} == '.'){
-				return Symphony::Configuration()->get(strtolower(substr($type, 1)), 'content-type-mappings');
-			} else {
-				return Symphony::Configuration()->get(strtolower($type), 'content-type-mappings');
+			if($type{0} == '.') {
+				return Symphony::Configuration()->get(strtolower(substr($type, 1)), self::SETTINGS_GROUP);
+			} 
+			else {
+				return Symphony::Configuration()->get(strtolower($type), self::SETTINGS_GROUP);
 			}
 		}
 
 		public function setContentType(array $context=NULL){
 			$page_data = Frontend::Page()->pageData();
 
-			if(!isset($page_data['type']) || !is_array($page_data['type']) || empty($page_data['type'])) return;
+			if(!isset($page_data['type']) || !is_array($page_data['type']) || empty($page_data['type'])) {
+				return;
+			}
 
-			foreach($page_data['type'] as $type){
+			foreach($page_data['type'] as $type) {
 				$content_type = $this->resolveType($type);
 
 				if(!is_null($content_type)){
@@ -259,4 +223,3 @@
 		}
 
 	}
-
