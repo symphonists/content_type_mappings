@@ -61,8 +61,6 @@
 				'class' => 'frame',
 				'id' => 'content-type-mappings-duplicator'
 			));
-			$out_wrapper->setAttribute('class', 'frame');
-			$out_wrapper->setAttribute('class', 'frame');
 
 			// create a wrapper
 			$wrapper = new XMLElement('ol');
