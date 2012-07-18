@@ -9,16 +9,23 @@
 	</types>
 	<authors>
 		<author>
+			<name github="symphonycms" symphony="team">Symphony Community</name>
+			<website>http://getsymphony.com</website>
+		</author>
+		<author>
+			<name github="Solutions-Nitriques" symphony="Nitriques">Solutions Nitriques</name>
+			<website>http://www.nitriques.com/open-source/</website>
+		</author>
+		<author>
 			<name github="pointybeard" symphony="alistair">Alistair Kearney</name>
 			<website>http://alistairkearney.com/</website>
 		</author>
-		<author>
-			<name github="symphonycms" symphony="team">Symphony Team</name>
-			<website>http://symphony-cms.com</website>
-		</author>
 	</authors>
 	<releases>
-		<release version="1.4" date="2011-11-18" min="2.1.0" max="2.3.x">
+		<release version="1.5" date="2012-07-16" min="2.3">
+			- Symphony 2.3 compatibility
+		</release>
+		<release version="1.4" date="2011-11-18" min="2.1.0" max="2.2.5">
 			- Added the preferences UI section;
 			- Updated the compatibility array, since this extensions works with 2.1.0 to 2.2.5
 		</release>

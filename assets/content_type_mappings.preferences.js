@@ -1,18 +1,13 @@
-/*-----------------------------------------------------------------------------
-Content Type Mappings
------------------------------------------------------------------------------*/
+(function($) {
 
-(function($, undefined) {
-	function init() {
-		var duplicator = $('#content-type-mappings-duplicator');
-			duplicator.symphonyDuplicator({
-				orderable: true,
-				collapsible: true
-			});
-	};
+	/**
+	 * Content Type Mappings
+	 */
+	$(document).ready(function() {
+		$('#content-type-mappings-duplicator').symphonyDuplicator({
+			orderable: true,
+			collapsible: true
+		});
+	});
 
-	$(init);
-
-})(jQuery);
-
-/*---------------------------------------------------------------------------*/
+})(jQuery.noConflict());
