@@ -69,9 +69,11 @@
 			$wrapper->appendChild($this->generateRow('New Content Mapping','template'));
 
 			// data
-			foreach($mappings as $type => $content_type){
-				$values = array('mime-type'=>$content_type,'page-type'=>$type);
-				$wrapper->appendChild($this->generateRow($values['page-type'], 'instance expanded', $values));
+			if(is_array($mappings)) {
+				foreach($mappings as $type => $content_type){
+					$values = array('mime-type'=>$content_type,'page-type'=>$type);
+					$wrapper->appendChild($this->generateRow($values['page-type'], 'instance expanded', $values));
+				}
 			}
 
 			$out_wrapper->appendChild($wrapper);
