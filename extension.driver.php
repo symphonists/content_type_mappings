@@ -1,7 +1,7 @@
 <?php
 
 	Final Class extension_Content_Type_Mappings extends Extension {
-	
+
 		const SETTINGS_GROUP = 'content-type-mappings';
 
 		public function getSubscribedDelegates() {
@@ -107,9 +107,9 @@
 			$columns = new XMLElement('div', null, array('class' => 'two columns'));
 			$content->appendChild($columns);
 
-			// Page type column 
+			// Page type column
 			$page_type = $this->generateLabelInput($columns, 'Page Type', 'page-type', $values['page-type']);
-			
+
 			// Mime type column
 			$mime_type = $this->generateLabelInput($columns, 'Mime Type', 'mime-type', $values['mime-type']);
 
@@ -159,7 +159,7 @@
 				}
 
 				// save the changes
-				Administration::instance()->saveConfig();
+				Symphony::Configuration()->write();
 
 				// unset from the context
 				unset($context['settings'][self::SETTINGS_GROUP]['mappings']);
@@ -180,22 +180,22 @@
 				Symphony::Configuration()->set($type, $content_type, self::SETTINGS_GROUP);
 			}
 
-			Administration::instance()->saveConfig();
+			Symphony::Configuration()->write();
 		}
 
 		public function uninstall(){
 			Symphony::Configuration()->remove(self::SETTINGS_GROUP);
-			Administration::instance()->saveConfig();
+			Symphony::Configuration()->write();
 		}
 
 		/** Utilities **/
 
 		public function resolveType($type){
-		
+
 			// fix issue #2, for downloadables files
 			if($type{0} == '.') {
 				return Symphony::Configuration()->get(strtolower(substr($type, 1)), self::SETTINGS_GROUP);
-			} 
+			}
 			else {
 				return Symphony::Configuration()->get(strtolower($type), self::SETTINGS_GROUP);
 			}
