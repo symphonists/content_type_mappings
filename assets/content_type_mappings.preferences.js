@@ -1,13 +1,11 @@
-(function($) {
+(function($, Symphony) {
+	'use strict';
 
-	/**
-	 * Content Type Mappings
-	 */
-	$(document).ready(function() {
-		$('#content-type-mappings-duplicator').symphonyDuplicator({
+	$(document).on('ready.ctm', function() {
+		$('#ctm-duplicator').symphonyDuplicator({
 			orderable: true,
 			collapsible: true
 		});
 	});
 
-})(jQuery.noConflict());
+})(window.jQuery, window.Symphony);
