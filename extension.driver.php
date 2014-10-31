@@ -227,8 +227,9 @@ Class extension_Content_Type_Mappings extends Extension {
             }
 
             if ($type{0} == '.') {
-                $FileName = $page_data['handle'];
-                Frontend::Page()->addHeaderToPage('Content-Disposition', "attachment; filename={$FileName}{$type}");
+                $page_params = Frontend::Page()->Params();
+                $filename = trim(str_replace('/', '.', $page_params['current-path']), '.');
+                Frontend::Page()->addHeaderToPage('Content-Disposition', "attachment; filename={$filename}{$type}");
             }
         }
     }
