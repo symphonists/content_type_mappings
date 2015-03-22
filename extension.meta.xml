@@ -22,6 +22,9 @@
 		</author>
 	</authors>
 	<releases>
+		<release version="1.7" date="2015-03-22" min="2.4">
+			- Add Export mode support multiple output types on a single page
+		</release>
 		<release version="1.6.1" date="2014-06-17" min="2.4">
 			- Code clean-up
 		</release>

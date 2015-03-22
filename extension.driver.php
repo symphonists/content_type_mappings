@@ -75,6 +75,9 @@ Class extension_Content_Type_Mappings extends Extension {
         // Data
         if (is_array($mappings)) {
             foreach ($mappings as $type => $content_type) {
+                //if type is export this is not a type but an export url param so skip to next element
+                if ($type == 'export') continue;
+
                 $values = array('mime-type'=>$content_type,'page-type'=>$type);
                 $wrapper->appendChild($this->generateRow($values['page-type'], 'instance expanded', $values));
             }
@@ -84,6 +87,12 @@ Class extension_Content_Type_Mappings extends Extension {
 
         // Wrapper into fieldset
         $fieldset->appendChild($out_wrapper);
+
+
+        // Add fieldset
+        $input = Widget::Input('settings[content-type-mappings][export]',Symphony::Configuration()->get('export', self::SETTINGS_GROUP));
+        $label = Widget::Label(__('Export URL parameter'), $input);
+        $fieldset->appendChild($label);
 
         // Adds the field set to the wrapper
         $context['wrapper']->appendChild($fieldset);
@@ -163,6 +172,8 @@ Class extension_Content_Type_Mappings extends Extension {
                 }
             }
 
+            Symphony::Configuration()->set('export', $context['settings'][self::SETTINGS_GROUP]['export'], self::SETTINGS_GROUP);
+
             // Save the changes
             Symphony::Configuration()->write();
 
@@ -188,7 +199,17 @@ Class extension_Content_Type_Mappings extends Extension {
             Symphony::Configuration()->set($type, $content_type, self::SETTINGS_GROUP);
         }
 
+        Symphony::Configuration()->set('export', 'export', self::SETTINGS_GROUP);
+
         Symphony::Configuration()->write();
+    }
+
+    public function update($previousVersion = null)
+    {
+        if(version_compare($previousVersion, '1.7', '<')) {
+            Symphony::Configuration()->set('export', 'export', self::SETTINGS_GROUP);
+            Symphony::Configuration()->write();
+        }
     }
 
     public function uninstall()
@@ -214,12 +235,20 @@ Class extension_Content_Type_Mappings extends Extension {
     public function setContentType(array $context=NULL)
     {
         $page_data = Frontend::Page()->pageData();
+        $params = Frontend::Page()->Params();
 
         if (!isset($page_data['type']) || !is_array($page_data['type']) || empty($page_data['type'])) {
             return;
         }
 
         foreach ($page_data['type'] as $type) {
+            $exportParam = $params['url-' . Symphony::Configuration()->get('export', self::SETTINGS_GROUP)];
+
+            //if starts with and has url-param export and export matches page data type
+            if (strrpos($type, 'export', -strlen($type)) !== FALSE && isset($exportParam) && $exportParam == substr($type, -strlen($exportParam)) ) {
+                $type = str_replace('export', '', $type);
+            }
+
             $content_type = $this->resolveType($type);
 
             if (!is_null($content_type)) {
