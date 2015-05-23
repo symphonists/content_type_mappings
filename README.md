@@ -16,7 +16,7 @@ Depending on the Content Type you map to a page type, it may not be necessary to
 
 ## Export Mode
 
-Prior to version 1.7 for each export mode that you wanted for a page you were required to create an identical page in symphony with an separate export mode.
+Prior to version 1.7 for each export mode that you wanted for a page you were required to create an identical page in Symphony with an separate export mode.
 This was quite an overhead if you were trying to create a number of reports which required both html and csv output, more so if you also had to export in xml or json format for other consumption.
 With version 1.7 you can handle all of this through the same page, instead of adding a page type `.csv` however add `export.csv` as your page type in addition to any other export formats required.
 
