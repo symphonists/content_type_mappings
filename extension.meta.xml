@@ -1,16 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<extension id="content_type_mappings" status="released" xmlns="http://symphony-cms.com/schemas/extension/1.0">
+<extension id="content_type_mappings" status="released" xmlns="http://getsymphony.com/schemas/extension/1.0">
 	<name>Content Type Mappings</name>
 	<description>Configure additional page MIME types</description>
 	<repo type="github">https://github.com/symphonycms/content_type_mappings</repo>
-	<url type="discuss">http://symphony-cms.com/discuss/thread/32779/</url>
+	<url type="discuss">http://www.getsymphony.com/discuss/thread/32779/</url>
 	<types>
 		<type>Workflow</type>
+		<type>MIME</type>
+		<type>Content Type</type>
 	</types>
 	<authors>
 		<author>
 			<name github="symphonycms" symphony="team">Symphony Community</name>
-			<website>http://getsymphony.com</website>
+			<website>http://www.getsymphony.com</website>
 		</author>
 		<author>
 			<name github="Solutions-Nitriques" symphony="Nitriques">Solutions Nitriques</name>
@@ -22,6 +24,9 @@
 		</author>
 	</authors>
 	<releases>
+		<release version="1.6.2" date="2016-03-06" min="2.4" max="2.x.x">
+			- Updated compatibility info
+		</release>
 		<release version="1.6.1" date="2014-06-17" min="2.4">
 			- Code clean-up
 		</release>
