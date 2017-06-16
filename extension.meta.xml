@@ -2,7 +2,7 @@
 <extension id="content_type_mappings" status="released" xmlns="http://getsymphony.com/schemas/extension/1.0">
 	<name>Content Type Mappings</name>
 	<description>Configure additional page MIME types</description>
-	<repo type="github">https://github.com/symphonycms/content_type_mappings</repo>
+	<repo type="github">https://github.com/symphonists/content_type_mappings</repo>
 	<url type="discuss">http://www.getsymphony.com/discuss/thread/32779/</url>
 	<types>
 		<type>Workflow</type>
@@ -11,7 +11,7 @@
 	</types>
 	<authors>
 		<author>
-			<name github="symphonycms" symphony="team">Symphony Community</name>
+			<name github="symphonists" symphony="team">Symphony Community</name>
 			<website>http://www.getsymphony.com</website>
 		</author>
 		<author>
