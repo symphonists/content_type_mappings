@@ -24,6 +24,9 @@
 		</author>
 	</authors>
 	<releases>
+		<release version="1.6.3" date="2017-06-16" min="2.4" max="2.x.x">
+			- Fix wrong github link
+		</release>
 		<release version="1.6.2" date="2016-03-06" min="2.4" max="2.x.x">
 			- Updated compatibility info
 		</release>
